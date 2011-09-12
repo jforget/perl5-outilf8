@@ -1,0 +1,132 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use charnames ':full';
+use subs qw/conversion recherche utf8_to_ucs4 ucs4_to_utf8 normalise_lg/;
+
+my %h2b = qw /0 0000 1 0001 2 0010 3 0011 4 0100 5 0101 6 0110 7 0111
+              8 1000 9 1001 A 1010 B 1011 C 1100 D 1101 E 1110 F 1111/;
+
+my %b2h = reverse %h2b;
+my $txt;
+
+if (@ARGV == 0) {
+  while (<>) {
+    conversion $_;
+  }
+}
+else {
+  foreach (@ARGV) {
+    conversion $_;
+  }
+}
+
+sub conversion {
+  local ($_) = @_;
+  if (/^u\+[0-9a-z]+$/i) {
+    ucs4_to_utf8 $_;
+  }
+  elsif (/^\&\#(\d+);$/) {
+    ucs4_to_utf8(sprintf "U+%x", $1);
+  }
+  elsif (/^[0-9a-z]+$/) {
+    utf8_to_ucs4 $_;
+  }
+  elsif (m{/((?:\\b)?[A-Za-z ]+(?:\\b)?)/}) {
+    recherche $1;
+  }
+  else {
+    print STDERR "$_ : inconnu\n";
+  }
+}
+
+sub recherche {
+  my ($re) = @_;
+  $txt = do "unicore/Name.pl" unless $txt;
+  for (grep { $_ =~ /$re/i } split "\n", $txt) {
+    /^([0-9A-F]+)\s+/
+      and ucs4_to_utf8(sprintf "U+%s", $1);
+  }
+}
+
+sub utf8_to_ucs4 {
+  local ($_) = @_;
+
+  chomp;
+  my $anc = normalise_lg $_, 10;
+  $_ = uc $_;
+  return unless /^[0-9A-F]+$/;
+  s/([0-9A-F])/$h2b{$1}/g;
+
+  if (/^0*(.......)$/) {
+    $_ = '0' x 25 . $1;
+  }
+  elsif (/^0*110(.....)10(......)$/) {
+    $_ = "0" x 21 . "$1$2";
+  }
+  elsif (/^0*1110(....)10(......)10(......)$/) {
+    $_ = "0" x 16 . "$1$2$3";
+  }
+  elsif (/^0*11110(...)10(......)10(......)10(......)$/) {
+    $_ = "000$1$2$3$4";
+  }
+  else {
+    print STDERR "$anc : chaîne UTF-8 invalide\n";
+    return;
+  }
+
+  s/(....)/$b2h{$1}/g;
+  print "$anc U+$_ &#", hex($_), "; ", charnames::viacode(hex $_), "\n";
+}
+
+sub ucs4_to_utf8 {
+  local ($_) = @_;
+  chomp $_;
+
+  $_ = uc(substr($_, 2));
+  my $anc = 'U+' . normalise_lg($_, 8);
+
+  my $num = hex($_);
+  if ($num < 0x80) {
+    $_ = "000000$_";
+  }
+  elsif ($num < 0x0800) {
+    s/([0-9A-F])/$h2b{$1}/g;
+    $_ = normalise_lg($_, 11);
+    substr($_, 0, 0) ='110';
+    substr($_, 8, 0) = '10';
+    s/(....)/$b2h{$1}/g;
+    $_ = "0000$_";
+  }
+  elsif ($num < 0x10000) {
+    s/([0-9A-F])/$h2b{$1}/g;
+    $_ = normalise_lg($_, 16);
+    substr($_,  0, 0) = '1110';
+    substr($_,  8, 0) = '10';
+    substr($_, 16, 0) = '10';
+    s/(....)/$b2h{$1}/g;
+    $_ = "00$_";
+  }
+  else {
+    s/([0-9A-F])/$h2b{$1}/g;
+    $_ = normalise_lg($_, 21);
+    substr($_,  0, 0) = '11110';
+    substr($_,  8, 0) = '10';
+    substr($_, 16, 0) = '10';
+    substr($_, 24, 0) = '10';
+    s/(....)/$b2h{$1}/g;
+  }
+  print '00' . $_, " $anc &#$num; ", sprintf("C-q %o ", $num), charnames::viacode($num), "\n";
+}
+
+sub normalise_lg {
+  my ($str, $lg) = @_;
+  if (length($str) < $lg) {
+    $str = '0' x ($lg - length($str)) . $_;
+  }
+  else {
+    $str = substr($str, -$lg);
+  }
+  return $str;
+}
