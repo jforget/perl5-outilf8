@@ -163,13 +163,13 @@ commande.
 
 Les arguments peuvent prendre ces deux formes :
 
-  u+I<nombre hexadécimal>
-  &#<nombre décimal>
+  u+<nombre hexadécimal>
+  &#<nombre décimal>;
 
 Dans  ces  deux  cas,  le  nombre,  décimal  ou  hexadécimal,  est  le
 I<codepoint> Unicode. Dans où l'on  fournit un nombre décimal en ligne
 de commande, ne pas oublier d'encadrer la chaîne dans des apostrophes,
-à cause du rôle spécial de l'esperluète en shell.
+à cause du rôle spécial de l'esperluète et du point-virgule en shell.
 
 L'argument  peut également  prendre la  forme d'un  nombre hexadécimal
 sans   préfixe.  Dans  ce   cas,  il   s'agit  d'une   suite  d'octets
