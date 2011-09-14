@@ -77,7 +77,8 @@ sub utf8_to_ucs4 {
   }
 
   s/(....)/$b2h{$1}/g;
-  print "$anc U+$_ &#", hex($_), "; ", charnames::viacode(hex $_), "\n";
+  my $num = hex($_);
+  print "$anc U+$_ &#$num; ", sprintf("C-q %o ", $num), ' ', charnames::viacode(hex $_), "\n";
 }
 
 sub ucs4_to_utf8 {
