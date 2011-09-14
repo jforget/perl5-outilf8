@@ -155,16 +155,32 @@ Cette documentation décrit C<outilf8> version 0.0.1.
 
 =head1 ARGUMENTS OBLIGATOIRES
 
-La liste complète des arguments qui peuvent être spécifiés
-sur la ligne de commande lors de l'appel de l'application,
-avec pour chacun l'explication de son effet, les restrictions
-sur l'endroit où il peut être utilisé (par exemple, des
-arguments qui doivent précéder ou suivre un nom de fichier)
-et comment les différents arguments peuvent interagir
-(exclusion mutuelle, combinaison obligatoire, etc).
+Les arguments sont facultatifs. S'il  n'y a aucun argument en ligne de
+commande, l'outil lit l'entrée standard pour en extraire les arguments
+à analyser  et à  convertir. S'il  y a au  moins un  argument, l'outil
+ignore  son entrée  standard  et  analyse les  arguments  en ligne  de
+commande.
 
-Si tous les arguments de l'applications sont facultatifs,
-cette section peut être omise en totalité.
+Les arguments peuvent prendre ces deux formes :
+
+  u+I<nombre hexadécimal>
+  &#<nombre décimal>
+
+Dans  ces  deux  cas,  le  nombre,  décimal  ou  hexadécimal,  est  le
+I<codepoint> Unicode. Dans où l'on  fournit un nombre décimal en ligne
+de commande, ne pas oublier d'encadrer la chaîne dans des apostrophes,
+à cause du rôle spécial de l'esperluète en shell.
+
+L'argument  peut également  prendre la  forme d'un  nombre hexadécimal
+sans   préfixe.  Dans  ce   cas,  il   s'agit  d'une   suite  d'octets
+correspondant à l'écriture du caractère en UTF-8.
+
+Finalement,   l'argument   peut   être   une  chaîne   de   caractères
+alphabétiques et blancs encadrés  par deux slashs. Cela représente une
+chaîne de recherche pour fouiller dans la liste des noms normalisés de
+caractères.  Cette  chaîne  peut   contenir  la  séquence  C<\b>  pour
+représenter une limite de mot. C'est la seule séquence spéciale prévue
+dans cette chaîne de recherche.
 
 =head1 OPTIONS
 
