@@ -169,18 +169,23 @@ Les arguments peuvent prendre ces deux formes :
 Dans  ces  deux  cas,  le  nombre,  décimal  ou  hexadécimal,  est  le
 I<codepoint> Unicode. Dans où l'on  fournit un nombre décimal en ligne
 de commande, ne pas oublier d'encadrer la chaîne dans des apostrophes,
-à cause du rôle spécial de l'esperluète et du point-virgule en shell.
+à cause du rôle spécial  de l'esperluète et du point-virgule en shell.
+Bien que l'écriture habituelle des I<codepoints> Unicode se fasse avec
+un S<« U »> majuscule et des chiffres hexadécimaux C<« A »> à C<« F »>
+majuscules, il est possible de les spécifier en minuscules.
 
 L'argument  peut également  prendre la  forme d'un  nombre hexadécimal
-sans   préfixe.  Dans  ce   cas,  il   s'agit  d'une   suite  d'octets
-correspondant à l'écriture du caractère en UTF-8.
+sans  préfixe.    Dans  ce  cas,   il  s'agit  d'une   suite  d'octets
+correspondant  à l'écriture  du caractère  en UTF-8.  Comme ci-dessus,
+l'utilisation des minuscules est autorisé.
 
 Finalement,   l'argument   peut   être   une  chaîne   de   caractères
 alphabétiques et blancs encadrés  par deux slashs. Cela représente une
 chaîne de recherche pour fouiller dans la liste des noms normalisés de
-caractères.  Cette  chaîne  peut   contenir  la  séquence  C<\b>  pour
+caractères.   Cette  chaîne  peut  contenir  la  séquence  C<\b>  pour
 représenter une limite de mot. C'est la seule séquence spéciale prévue
-dans cette chaîne de recherche.
+dans cette chaîne de recherche. La recherche se fait sans tenir compte
+de la distinction minuscules-majuscules.
 
 =head1 OPTIONS
 
@@ -204,9 +209,9 @@ incompatible avec le codage UTF-8.
 
 L'argument ne correspond pas aux quatres schémas connus : C<U+xxxx> ou
 C<&#xxxx;> pour  un I<codepoint>  Unicode, un nombre  hexadécimal pour
-une  séquence UTF-8  ou une  expression régulière  entre  slash, cette
-expression régulière ne pouvant contenir  que des lettres, du blanc et
-une balise C<\b> au début ou à la fin.
+une  séquence UTF-8  ou une  expression régulière  entre  deux slashs,
+cette  expression régulière ne  pouvant contenir  que des  lettres, du
+blanc et une balise C<\b> au début ou à la fin ou aux deux extrémités.
 
 =back
 
