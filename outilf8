@@ -184,48 +184,56 @@ dans cette chaîne de recherche.
 
 =head1 OPTIONS
 
-La liste complète de toutes les options disponibles
-lors de l'appel de l'application, avec pour chacune
-l'explication de son rôle et les restrictions
-et interactions avec les autres paramètres.
-
-Si l'application n'a aucune option,
-cette section peut être omise en totalité.
+Pour le moment, aucune option.
 
 =head1 DESCRIPTION
 
-Une description complète de l'application et de ses fonctionnalités
+Une description  complète de  l'application et de  ses fonctionnalités
 Peut comporter des sous-sections (càd =head2, =head3, etc.).
 
 =head1 DIAGNOSTICS
 
-La liste de tous les messages d'erreur et d'avertissement que l'application
-est susceptible de renvoyer (y compris les erreurs qui « n'arriveront
-jamais »), avec une explication détaillée de chaque problème,
-la ou les causes probables et quelques suggestions de correction.
-Si, lorsque l'application se termine, elle renvoie un code
-statut (sous Unix, par exemple), ce paragraphe liste les codes
-statuts associés à chaque erreur.
+=over 4
+
+=item Chaîne UTF-8 invalide
+
+Un argument hexadécimal sans préfixe C<U+> contient une suite de bits
+incompatible avec le codage UTF-8.
+
+=item Inconnu
+
+L'argument ne correspond pas aux quatres schémas connus : C<U+xxxx> ou
+C<&#xxxx;> pour  un I<codepoint>  Unicode, un nombre  hexadécimal pour
+une  séquence UTF-8  ou une  expression régulière  entre  slash, cette
+expression régulière ne pouvant contenir  que des lettres, du blanc et
+une balise C<\b> au début ou à la fin.
+
+=back
 
 =head1 CONFIGURATION ET ENVIRONNEMENT
 
-Une explication complète du ou des systèmes de configuration de l'application,
-avec entre autres le nom et l'emplacement des fichiers de configuration
-et le nom des variables d'environnement et des propriétés que l'on
-peut positionner. Cela peut inclure la description détaillée
-du langage de configuration.
+Néant.
 
 =head1 DÉPENDANCES
 
+Néant.
+
 =head1 INCOMPATIBILITÉS
 
+Aucune incompatibilité identifiée.
+
 =head1 BOGUES ET LIMITES
+
+Pour l'instant, aucun n'a été identifié.
 
 =head1 AUTEUR
 
 Jean Forget, JFORGET (à) cpan.org
 
-=head1 LICENSE ET COPYRIGHT
+=head1 LICENCE ET COPYRIGHT
+
+(C) Jean Forget, 2011, tous droits réservés.
 
 Les termes  de licence  de ce  script sont les  mêmes termes  que pour
-Perl.
+Perl : GNU General Public License (GPL) et Artistic License.
+
