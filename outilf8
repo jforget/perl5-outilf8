@@ -25,13 +25,13 @@ else {
 
 sub conversion {
   local ($_) = @_;
-  if (/^u\+[0-9a-z]+$/i) {
+  if (/^u\+[0-9a-f]+$/i) {
     ucs4_to_utf8 $_;
   }
   elsif (/^\&\#(\d+);$/) {
     ucs4_to_utf8(sprintf "U+%x", $1);
   }
-  elsif (/^[0-9a-z]+$/) {
+  elsif (/^[0-9a-f]+$/) {
     utf8_to_ucs4 $_;
   }
   elsif (m{/((?:\\b)?[A-Za-z ]+(?:\\b)?)/}) {
