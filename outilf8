@@ -11,6 +11,20 @@ my %h2b = qw /0 0000 1 0001 2 0010 3 0011 4 0100 5 0101 6 0110 7 0111
 
 my %b2h = reverse %h2b;
 my $txt;
+binmode STDOUT, ':encoding(UTF-8)';
+
+
+sub my_chr {
+  my ($num) = @_;
+  if ($num >= 128 and $num <= 255) {
+    my $ch = chr($num);
+    utf8::upgrade($ch);
+    return $ch;
+  }
+  else {
+    return chr($num);
+  }
+}
 
 if (@ARGV == 0) {
   while (<>) {
@@ -79,7 +93,7 @@ sub utf8_to_ucs4 {
 
   s/(....)/$b2h{$1}/g;
   my $num = hex($_);
-  print "$anc U+$_ &#$num; ", sprintf("C-q %o ", $num), ' ', charnames::viacode(hex $_), "\n";
+  print "$anc U+$_ &#$num; ", sprintf("C-q %o ", $num), my_chr($num), ' ', charnames::viacode(hex $_), "\n";
 }
 
 sub ucs4_to_utf8 {
@@ -119,7 +133,7 @@ sub ucs4_to_utf8 {
     substr($_, 24, 0) = '10';
     s/(....)/$b2h{$1}/g;
   }
-  print '00' . $_, " $anc &#$num; ", sprintf("C-q %o ", $num), charnames::viacode($num), "\n";
+  print '00' . $_, " $anc &#$num; ", sprintf("C-q %o ", $num), my_chr($num), ' ', charnames::viacode($num), "\n";
 }
 
 sub normalise_lg {
