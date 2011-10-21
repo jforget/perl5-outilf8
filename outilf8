@@ -147,6 +147,8 @@ sub normalise_lg {
   return $str;
 }
 
+=encoding utf8
+
 =head1 NOM
 
 outilf8 - outil pour les conversions UTF-8 vers Unicode et inversement
