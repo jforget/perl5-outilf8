@@ -1,10 +1,12 @@
 #!/usr/bin/perl
 # -*- encoding: utf-8 -*-
 
+use v5.10;
 use strict;
 use warnings;
 use charnames ':full';
-use subs qw/conversion recherche utf8_to_ucs4 ucs4_to_utf8 normalise_lg/;
+use Getopt::Long;
+use subs qw/my_chr conversion recherche utf8_to_ucs4 ucs4_to_utf8 normalise_lg formattage/;
 
 my %h2b = qw /0 0000 1 0001 2 0010 3 0011 4 0100 5 0101 6 0110 7 0111
               8 1000 9 1001 A 1010 B 1011 C 1100 D 1101 E 1110 F 1111/;
@@ -13,6 +15,27 @@ my %b2h = reverse %h2b;
 my $txt;
 binmode STDOUT, ':encoding(UTF-8)';
 
+my $format = "%f U+%h &#%d; C-q %o %c %l\n";
+my ($b_car, $b_html);
+GetOptions('format=s'   => \$format,
+           'caractere'  => \$b_car,
+           'html'       => \$b_html,
+  )
+    or die "problème avec les options";
+
+$format = "%c"    if $b_car;
+$format = "&#%d;" if $b_html;
+
+if (@ARGV == 0) {
+  while (<>) {
+    conversion $_;
+  }
+}
+else {
+  foreach (@ARGV) {
+    conversion $_;
+  }
+}
 
 sub my_chr {
   my ($num) = @_;
@@ -23,17 +46,6 @@ sub my_chr {
   }
   else {
     return chr($num);
-  }
-}
-
-if (@ARGV == 0) {
-  while (<>) {
-    conversion $_;
-  }
-}
-else {
-  foreach (@ARGV) {
-    conversion $_;
   }
 }
 
@@ -93,7 +105,7 @@ sub utf8_to_ucs4 {
 
   s/(....)/$b2h{$1}/g;
   my $num = hex($_);
-  print "$anc U+$_ &#$num; ", sprintf("C-q %o ", $num), my_chr($num), ' ', charnames::viacode(hex $_), "\n";
+  print formattage($format, $num, $anc);
 }
 
 sub ucs4_to_utf8 {
@@ -133,7 +145,7 @@ sub ucs4_to_utf8 {
     substr($_, 24, 0) = '10';
     s/(....)/$b2h{$1}/g;
   }
-  print '00' . $_, " $anc &#$num; ", sprintf("C-q %o ", $num), my_chr($num), ' ', charnames::viacode($num), "\n";
+  print formattage($format, $num, '00' . $_);
 }
 
 sub normalise_lg {
@@ -145,6 +157,23 @@ sub normalise_lg {
     $str = substr($str, -$lg);
   }
   return $str;
+}
+
+sub formattage {
+  my ($format, $codep, $utf8) = @_;
+  my @elements = split /\%([cdfhlno])/, $format;
+  for (my $i = 1; $i <= $#elements; $i += 2) {
+    given ($elements[$i]) {
+      when ('c') { $elements[$i] = my_chr($codep); }
+      when ('d') { $elements[$i] =        $codep ; }
+      when ('f') { $elements[$i] = $utf8; }
+      when ('h') { $elements[$i] = sprintf("%08X",    $codep); }
+      when ('l') { $elements[$i] = charnames::viacode($codep); }
+      when ('n') { $elements[$i] = "\n"; }
+      when ('o') { $elements[$i] = sprintf("%o",      $codep); }
+    }    
+  }
+  return join '', @elements;
 }
 
 =encoding utf8
@@ -205,12 +234,70 @@ de la distinction minuscules-majuscules.
 
 =head1 OPTIONS
 
-Pour le moment, aucune option.
+=over 4
+
+=item format
+
+Il est possible  de choisir le format de sortie  de la conversion.  Le
+format est une chaîne dans le genre des formats pour C<printf>.  C'est
+une chaîne de caractères telle que "décimal %d -> %l".  La chaîne peut
+contenir les digrammes suivants :
+
+=over 4
+
+=item C<%c>
+
+Permet d'afficher le caractère correspondant au I<codepoint> entré.
+
+=item C<%d>
+
+Permet d'afficher le I<codepoint> en décimal.
+
+=item C<%f>
+
+Permet d'afficher  la suite d'octets correspondant  à l'encodage UTF-8
+du  caractère.  Le nombre  est complété  par des  zéros pour  avoir 10
+chiffres hexadécimaux.
+
+=item C<%h>
+
+Permet d'afficher le I<codepoint> en hexadécimal à huit chiffres.
+
+=item C<%l>
+
+Permet d'afficher le libellé normalisé du I<codepoint>.
+
+=item C<%n>
+
+Permet d'obtenir un passage à la ligne.
+
+=item C<%o>
+
+Permet d'afficher le I<codepoint> en octal.
+
+=back
+
+=item caractere
+
+Option  sans  argument, abréviation  de  C<-format="%c">. Cela  permet
+d'afficher le caractère et uniquement le caractère.
+
+=item html
+
+Option sans  argument, abréviation de  C<-format="&#%d;">. Cela permet
+d'insérer le caractère dans un fichier HTML en ASCII 7-bits.
+
+=back
 
 =head1 DESCRIPTION
 
-Une description  complète de  l'application et de  ses fonctionnalités
-Peut comporter des sous-sections (càd =head2, =head3, etc.).
+Cet   utilitaire  permet   d'effectuer  des   conversions   entre  les
+I<codepoints> Unicode  et l'encodage  UTF-8. De plus,  le C<codepoint>
+Unicode est donné en décimal, en hexadécimal et en octal et accompagné
+du caractère lui-même et de son libellé normalisé.
+
+Il  permet  également  d'effectuer  des  recherches  avec  le  libellé
+normalisé, en utilisant un sous-ensemble d'expressions régulières.
 
 =head1 DIAGNOSTICS
 
