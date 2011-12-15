@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# -*- encoding: utf-8 -*-
+# -*- encoding: utf-8; indent-tabs-mode: nil -*-
 
 use v5.10;
 use strict;
