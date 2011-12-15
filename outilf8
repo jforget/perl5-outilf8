@@ -299,6 +299,31 @@ du caractère lui-même et de son libellé normalisé.
 Il  permet  également  d'effectuer  des  recherches  avec  le  libellé
 normalisé, en utilisant un sous-ensemble d'expressions régulières.
 
+Cet utilitaire peut facilement s'intégrer  à une session sous I<vi> ou
+clone, notamment  le mode I<viper>  d'I<Emacs>. Dans un  texte normal,
+placez le curseur à l'endroit voulu et, en mode commande, tapez :
+
+  :r! outilf8 -c u+2660 u+2661 u+2662 u+2663
+
+et vous  obtenez les quatres couleurs  des jeux de  cartes. Remarque :
+C<-c> est l'abréviation de  C<-caractere>. Pas besoin d'en taper plus,
+il faut que cela reste ergonomique. Et si votre fichier est un fichier
+HTML, en mode commande tapez :
+
+  :r! outilf8 -h u+2660 u+2661 u+2662 u+2663
+
+et vous obtenez la série d'entités HTML correspondant aux couleurs des
+jeux de cartes.
+
+Si  vous utilisez I<Emacs>  sans le  mode I<viper>,  il y  a peut-être
+moyen d'utiliser I<outilf8> pour insérer des caractères ou des entités
+HTML, mais je  ne le connais pas. Et je n'en  ai pas besoin, j'utilise
+le mode I<viper>.
+
+Pour  la conversion  dans l'autre  sens, caractère  vers I<codepoint>,
+utilisez la commande  standard C<what-cursor-position> d'I<Emacs>, qui
+s'active simplement avec C<C-x => (contrôle x puis égal).
+
 =head1 DIAGNOSTICS
 
 =over 4
