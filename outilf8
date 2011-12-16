@@ -315,14 +315,20 @@ HTML, en mode commande tapez :
 et vous obtenez la série d'entités HTML correspondant aux couleurs des
 jeux de cartes.
 
-Si  vous utilisez I<Emacs>  sans le  mode I<viper>,  il y  a peut-être
-moyen d'utiliser I<outilf8> pour insérer des caractères ou des entités
-HTML, mais je  ne le connais pas. Et je n'en  ai pas besoin, j'utilise
-le mode I<viper>.
+Si vous  utilisez I<Emacs> sans  le mode I<viper>, vous  pouvez lancer
+une session shell avec C<M-x  shell> et exécuter C<outilf8> dans cette
+session. Il est alors possible d'éditer le résultat avec les fonctions
+habituelles d'I<Emacs>,  notamment de copier-coller  des caractères du
+tampon C<*shell*> vers  le tampon de votre fichier  texte.  Je préfère
+de loin utiliser le mode  I<viper> et la fonction C<:r!>.  Peut-être y
+a-t-il  d'autres  façons de  procéder  avec  I<Emacs>,  mais la  façon
+présentée ci-dessus me semble  suffisamment ergonomique et me convient
+parfaitement.
 
 Pour  la conversion  dans l'autre  sens, caractère  vers I<codepoint>,
 utilisez la commande  standard C<what-cursor-position> d'I<Emacs>, qui
-s'active simplement avec C<C-x => (contrôle x puis égal).
+s'active  simplement avec  C<C-x  =>  (contrôle x  puis  égal). Je  ne
+connais pas l'équivalent pour I<vi>.
 
 =head1 DIAGNOSTICS
 
