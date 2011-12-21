@@ -368,6 +368,29 @@ Aucune incompatibilité identifiée.
 
 Pour l'instant, aucun n'a été identifié.
 
+=head1 SÉCURITÉ
+
+=head2 UTF-8 malformé
+
+Le programme affiche la séquence  d'octets avec des zéros en tête pour
+permettre un alignement vertical du deuxième champ, le I<codepoint> en
+hexadécimal. Cela ne veut pas dire que l'on doit utiliser ces octets à
+zéro, ni  même que l'on peut  le faire. Malgré la  sortie formattée de
+C<outilf8>, veuillez éliminer ces octets nuls en tête.
+
+=head2 Expression régulière fournie par l'utilisateur
+
+La syntaxe  des expressions régulières autorisées  dans C<outilf8> est
+volontairement  réduite,  pour éviter  des  injections  de  code  avec
+C<(?{ code })> ou assimilé ou des expressions régulières dont le temps
+d'exécution   est   rédhibitoire   avec  l'utilisation   vicieuse   de
+quantificateurs  de répétition.  Les  seuls caractères  autorisés sont
+ceux  qui apparaissent  dans les  libellés normalisés  des caractères,
+c'est-à-dire les  26 lettres de  l'alphabet et l'espace, ainsi  que la
+balise C<\b> pour  indiquer le début ou la fin  d'un mot (cette balise
+ne peut apparaître qu'au début  ou à la fin de l'expression régulière,
+elle est inutile à l'intérieur).
+
 =head1 AUTEUR
 
 Jean Forget, JFORGET (à) cpan.org
