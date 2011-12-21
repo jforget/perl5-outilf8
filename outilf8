@@ -315,15 +315,18 @@ HTML, en mode commande tapez :
 et vous obtenez la série d'entités HTML correspondant aux couleurs des
 jeux de cartes.
 
-Si vous  utilisez I<Emacs> sans  le mode I<viper>, vous  pouvez lancer
-une session shell avec C<M-x  shell> et exécuter C<outilf8> dans cette
-session. Il est alors possible d'éditer le résultat avec les fonctions
-habituelles d'I<Emacs>,  notamment de copier-coller  des caractères du
-tampon C<*shell*> vers  le tampon de votre fichier  texte.  Je préfère
-de loin utiliser le mode  I<viper> et la fonction C<:r!>.  Peut-être y
-a-t-il  d'autres  façons de  procéder  avec  I<Emacs>,  mais la  façon
-présentée ci-dessus me semble  suffisamment ergonomique et me convient
-parfaitement.
+Si vous utilisez  I<Emacs> sans le mode I<viper>, ou  si vous avez des
+problèmes pour  les commandes I<vi> contenant  un point d'exclamation,
+vous  pouvez lancer  une session  shell  avec C<M-x  shell> (ou  C<M-x
+cygwin-shell> sous  Windows si  vous préférez) et  exécuter C<outilf8>
+dans cette  session. Il est  alors possible d'éditer le  résultat avec
+les fonctions  habituelles d'I<Emacs>, notamment  de copier-coller des
+caractères  du  tampon C<*shell*>  vers  le  tampon  de votre  fichier
+texte. Quand je n'ai pas de problème avec les points d'exclamation, je
+préfère  de loin  utiliser le  mode  I<viper> et  la fonction  C<:r!>.
+Peut-être y a-t-il d'autres façons  de procéder avec I<Emacs>, mais la
+façon  présentée ci-dessus  me semble  suffisamment ergonomique  et me
+convient parfaitement.
 
 Pour  la conversion  dans l'autre  sens, caractère  vers I<codepoint>,
 utilisez la commande  standard C<what-cursor-position> d'I<Emacs>, qui
