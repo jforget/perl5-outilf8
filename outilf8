@@ -161,16 +161,17 @@ sub normalise_lg {
 
 sub formattage {
   my ($format, $codep, $utf8) = @_;
-  my @elements = split /\%([cdfhlno])/, $format;
+  my @elements = split /\%([cdfhlno%])/, $format;
   for (my $i = 1; $i <= $#elements; $i += 2) {
     given ($elements[$i]) {
       when ('c') { $elements[$i] = my_chr($codep); }
       when ('d') { $elements[$i] =        $codep ; }
-      when ('f') { $elements[$i] = $utf8; }
       when ('h') { $elements[$i] = sprintf("%08X",    $codep); }
       when ('l') { $elements[$i] = charnames::viacode($codep); }
-      when ('n') { $elements[$i] = "\n"; }
       when ('o') { $elements[$i] = sprintf("%o",      $codep); }
+      when ('f') { $elements[$i] = $utf8; }
+      when ('n') { $elements[$i] = "\n"; }
+      when ('%') { $elements[$i] = "%"; }
     }    
   }
   return join '', @elements;
@@ -274,6 +275,10 @@ Permet d'obtenir un passage à la ligne.
 =item C<%o>
 
 Permet d'afficher le I<codepoint> en octal.
+
+=item C<%%>
+
+Permet d'afficher un caractère pourcent.
 
 =back
 
