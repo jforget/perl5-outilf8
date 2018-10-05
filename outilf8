@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use charnames ':full';
 use Getopt::Long;
+use experimental qw/switch/;
 use subs qw/my_chr conversion recherche utf8_to_ucs4 ucs4_to_utf8 normalise_lg formattage/;
 
 my %h2b = qw /0 0000 1 0001 2 0010 3 0011 4 0100 5 0101 6 0110 7 0111
@@ -60,7 +61,7 @@ sub conversion {
   elsif (/^[0-9a-f]+$/) {
     utf8_to_ucs4 $_;
   }
-  elsif (m{/((?:\\b)?[A-Za-z ]+(?:\\b)?)/}) {
+  elsif (m{/((?:\\b)?[A-Za-z ?]+(?:\\b)?)/}) {
     recherche $1;
   }
   else {
@@ -371,7 +372,9 @@ Aucune incompatibilité identifiée.
 
 =head1 BOGUES ET LIMITES
 
-Pour l'instant, aucun n'a été identifié.
+Le seul problème  connu est dû à Unicode, pas  à C<outilf8>. Il s'agit
+de la lettre LAMBDA, qui est  orthographiée LAMDA (sans B) dans toutes
+les entrées sauf une de la base Unicode.
 
 =head1 SÉCURITÉ
 
@@ -395,6 +398,10 @@ c'est-à-dire les  26 lettres de  l'alphabet et l'espace, ainsi  que la
 balise C<\b> pour  indiquer le début ou la fin  d'un mot (cette balise
 ne peut apparaître qu'au début  ou à la fin de l'expression régulière,
 elle est inutile à l'intérieur).
+
+On autorise  également le quantifiant  C<?> pour  le cas de  la lettre
+grecque lambda, qui  apparaît dans la documentation avec  le nom lamda
+sans "b". Il faut rechercher C</lamb?da/> et non pas C</lambda/>.
 
 =head1 AUTEUR
 
