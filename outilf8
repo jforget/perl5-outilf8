@@ -72,7 +72,7 @@ sub conversion {
 sub recherche {
   my ($re) = @_;
   $txt = do "unicore/Name.pl" unless $txt;
-  for (grep { $_ =~ /$re/i } split "\n", $txt) {
+  for (grep { $_ =~ /$re/i } split "\n\n", $txt) {
     /^([0-9A-F]+)\s+/
       and ucs4_to_utf8(sprintf "U+%s", $1);
   }
@@ -372,9 +372,38 @@ Aucune incompatibilité identifiée.
 
 =head1 BOGUES ET LIMITES
 
-Le seul problème  connu est dû à Unicode, pas  à C<outilf8>. Il s'agit
-de la lettre LAMBDA, qui est  orthographiée LAMDA (sans B) dans toutes
-les entrées sauf une de la base Unicode.
+Le  premier problème  connu est  dû à  Unicode, pas  à C<outilf8>.  Il
+s'agit de la lettre LAMBDA, qui  est orthographiée LAMDA (sans B) dans
+toutes les entrées sauf une de la base Unicode.
+
+Un autre problème est dû  au fichier standard F<unicore/Name.PL>. Dans
+une  ancienne version  de  Perl,  ce fichier  créait  une chaîne  dans
+laquelle  chaque  entrée tenait  sur  une  ligne. Exemple,  dans  Perl
+S<5.28.0 :>
+
+  -*-*-*- début du copier-coller
+  0039A	GREEK CAPITAL LETTER KAPPA
+  0039B	GREEK CAPITAL LETTER LAMDA
+  0039C	GREEK CAPITAL LETTER MU
+  -*-*-*- fin du copier-coller
+
+Maintenant, une entrée est codée sur  deux lignes, avec une ligne vide
+pour la séparer de la suivante. Exemple dans Perl S<5.32.1 :>
+
+  -*-*-*- début du copier-coller
+  0039A
+  GREEK CAPITAL LETTER KAPPA
+
+  0039B
+  GREEK CAPITAL LETTER LAMDA
+
+  0039C
+  GREEK CAPITAL LETTER MU
+  -*-*-*- fin du copier-coller
+
+La présente  version de  F<outilf8> est  compatible avec  les versions
+récentes  de Perl,  c'est-à-dire avec  les versions  qui séparent  les
+entrées de F<Name.pl> avec des lignes vides.
 
 =head1 SÉCURITÉ
 
