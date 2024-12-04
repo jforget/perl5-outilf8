@@ -36,4 +36,17 @@ regexp:
   0000EA9DA6 U+0000A766 &#42854; C-q 123546 Ꝧ LATIN CAPITAL LETTER THORN WITH STROKE THROUGH DESCENDER
   0000EA9DA7 U+0000A767 &#42855; C-q 123547 ꝧ LATIN SMALL LETTER THORN WITH STROKE THROUGH DESCENDER
 
+You can modify  the output format, either with a  predefined format or
+with a user-defined format. Example:
+
+  outilf8 -caractere u+e9
+  outilf8 -html u+e9
+  outilf8 -format='%l' u+e9
+
+Résultat :
+
+  é
+  &#233;
+  LATIN SMALL LETTER E WITH ACUTE
+
 This script is licensed under the same terms as perl.

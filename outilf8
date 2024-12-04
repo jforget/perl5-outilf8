@@ -168,7 +168,7 @@ sub formattage {
       when ('c') { $elements[$i] = my_chr($codep); }
       when ('d') { $elements[$i] =        $codep ; }
       when ('h') { $elements[$i] = sprintf("%08X",    $codep); }
-      when ('l') { $elements[$i] = charnames::viacode($codep); }
+      when ('l') { $elements[$i] = charnames::viacode($codep) // ''; }
       when ('o') { $elements[$i] = sprintf("%o",      $codep); }
       when ('f') { $elements[$i] = $utf8; }
       when ('n') { $elements[$i] = "\n"; }
@@ -267,7 +267,7 @@ Permet d'afficher le I<codepoint> en hexadécimal à huit chiffres.
 
 =item C<%l>
 
-Permet d'afficher le libellé normalisé du I<codepoint>.
+Permet d'afficher le libellé normalisé du I<codepoint> s'il existe.
 
 =item C<%n>
 
@@ -438,7 +438,7 @@ Jean Forget, JFORGET (à) cpan.org
 
 =head1 LICENCE ET COPYRIGHT
 
-(C) Jean Forget, 2011, 2023, tous droits réservés.
+(C) Jean Forget, 2011, 2023, 2024, tous droits réservés.
 
 Les termes  de licence  de ce  script sont les  mêmes termes  que pour
 Perl : GNU General Public License (GPL) et Artistic License.

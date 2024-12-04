@@ -37,6 +37,19 @@ charnames avec des expressions régulières assez simplistes :
   0000EA9DA6 U+0000A766 &#42854; C-q 123546 Ꝧ LATIN CAPITAL LETTER THORN WITH STROKE THROUGH DESCENDER
   0000EA9DA7 U+0000A767 &#42855; C-q 123547 ꝧ LATIN SMALL LETTER THORN WITH STROKE THROUGH DESCENDER
 
+Il est possible de réduire l'affichage  avec un format prédéfini ou un
+format choisi par l'utilisateur
+
+  outilf8 -caractere u+e9
+  outilf8 -html u+e9
+  outilf8 -format='%l' u+e9
+
+Résultat :
+
+  é
+  &#233;
+  LATIN SMALL LETTER E WITH ACUTE
+
 Les termes  de licence  de ce  script sont les  mêmes termes  que pour
 Perl.
 
